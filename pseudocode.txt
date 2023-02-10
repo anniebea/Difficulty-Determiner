@@ -1,0 +1,99 @@
+function sudoku_difficulty_detector(puzzle_grid):
+    difficulty = 0
+    bifurcation_backtrack = stack()
+    while not solved(puzzle_grid):
+        new_puzzle_grid = naked_single(puzzle_grid, i, j)
+        if puzzle_grid != new_puzzle_grid:
+            puzzle_grid = new_puzzle_grid
+            difficulty += 1
+            continue
+
+        if not solved(puzzle_grid):
+            new_puzzle_grid = naked_pair(puzzle_grid)
+            if puzzle_grid != new_puzzle_grid:
+                puzzle_grid = new_puzzle_grid
+                difficulty += 1
+                continue
+
+        ...
+
+        if not solved(puzzle_grid):
+            new_puzzle_grid = x_wing(puzzle_grid)
+            if puzzle_grid != new_puzzle_grid:
+                puzzle_grid = new_puzzle_grid
+                difficulty += 2
+                continue
+
+        ...
+
+        if not solved(puzzle_grid):
+            new_puzzle_grid = medusa(puzzle_grid)
+            if puzzle_grid != new_puzzle_grid:
+                puzzle_grid = new_puzzle_grid
+                difficulty += 3
+                continue
+
+        ...
+
+        if not solved(puzzle_grid):
+            bifurcation_backtrack.push(difficulty, puzzle_grid)
+            difficulty += 10000
+            new_puzzle_grid = brute_force(puzzle_grid)
+            if puzzle_grid == new_puzzle_grid:
+                puzzle_grid_backtrack(puzzle_grid, difficulty, bifurcation_backtrack)
+
+    if difficulty < 150:
+        return '1/5'
+    else if difficulty < 296:
+        return '2/5'
+    else if difficulty < 545:
+        return '3/5'
+    else if difficulty < 1024:
+        return '4/5'
+    else if difficulty < 10000:
+        return '5/5'
+    else:
+        return 'Not a True Sudoku!'
+
+function convert_string_to_grid(puzzle_string):
+    # converts puzzle string to 9x9 grid
+
+function convert_grid_to_string(puzzle_grid):
+    # converts puzzle grid to string
+
+function solved(puzzle_grid):
+    # returns true if puzzle is solved, false otherwise
+
+function brute_force(puzzle_grid):
+    # attempts to solve puzzle using brute force method
+
+function naked_single(puzzle_grid, row, col):
+    possibilities = get_possibilities(puzzle_grid, row, col)
+    if len(possibilities) == 1:
+        puzzle_grid[row][col] = possibilities[0]
+        print(convert_grid_to_string(puzzle_grid))
+
+function naked_pair(puzzle_grid):
+    # Check for naked pairs in rows, columns, and boxes
+    for unit in puzzle_grid + transpose(puzzle_grid) + get_boxes(puzzle_grid):
+        for pair in get_naked_pairs(unit):
+            for cell in get_related_cells(unit, pair):
+                remove_possibilities(puzzle_grid, cell, pair)
+
+function get_possibilities(puzzle_grid, row, col):
+    # returns list of possible values for cell at (row, col)
+
+function transpose(puzzle_grid):
+    # returns the transposed puzzle grid
+
+function get_boxes(puzzle_grid):
+    # returns the puzzle grid broken down into 3x3 boxes
+
+function get_naked_pairs(unit):
+    # returns the naked pairs in a given unit
+
+function get_related_cells(unit, pair):
+    # returns cells in the unit related to a given pair
+
+function remove_possibilities(puzzle_grid, cell, pair):
+    # removes the possibility of the values in pair from the cell
